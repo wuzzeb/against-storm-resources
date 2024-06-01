@@ -1,0 +1,53 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "vite:dev",
+      "command": "pnpm dev",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "BROWSER": "no"
+        }
+      },
+      "type": "shell",
+      "presentation": {
+        "reveal": "silent",
+        "panel": "dedicated"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": [
+          {
+            "regexp": ".",
+            "file": 1,
+            "location": 2,
+            "message": 3
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "."
+        }
+      }
+    },
+    {
+      "label": "terminate:vite:dev",
+      "command": "echo ${input:terminateViteInsight}",
+      "type": "shell",
+      "presentation": {
+        "reveal": "silent",
+        "close": true
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "terminateViteInsight",
+      "type": "command",
+      "command": "workbench.action.tasks.terminate",
+      "args": "vite:dev"
+    }
+  ]
+}
