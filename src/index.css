@@ -1,3 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .ats-react-select-container .ats-react-select__control {
+    @apply dark:bg-neutral-700 dark:border-neutral-700 dark:hover:border-neutral-500;
+  }
+
+  .ats-react-select-container .ats-react-select__control--is-focused {
+    @apply dark:border-neutral-400 dark:hover:border-neutral-400;
+  }
+
+  .ats-react-select-container .ats-react-select__menu {
+    @apply dark:bg-neutral-700 dark:border-neutral-600;
+  }
+
+  .ats-react-select-container .ats-react-select__option {
+    @apply dark:text-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-800;
+  }
+
+  .ats-react-select-container .ats-react-select__multi-value {
+    @apply dark:bg-neutral-800 ;
+  }
+
+  .ats-react-select-container .ats-react-select__multi-value__label,
+  .ats-react-select-container .ats-react-select__multi-value__remove {
+    @apply dark:text-neutral-200;
+  }
+
+  .ats-react-select-container .ats-react-select__input-container,
+  .ats-react-select-container .ats-react-select__placeholder,
+  .ats-react-select-container .ats-react-select__single-value {
+    @apply dark:text-neutral-200;
+  }
+}
