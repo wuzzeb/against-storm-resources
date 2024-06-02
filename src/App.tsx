@@ -1,5 +1,6 @@
 import { useAtom, useAtomValue } from "jotai";
 import Select from "react-select";
+import mermaid from "mermaid";
 
 import { G, biomes, crops, deposits, goods } from "./resources.ts";
 import {
@@ -14,7 +15,7 @@ import {
 } from "./graph.ts";
 import { buildings, recipeByBuilding, startingBuildings } from "./recpie.ts";
 import { LazySeq } from "@seedtactics/immutable-collections";
-import { useId } from "react";
+import { useEffect, useId, useRef } from "react";
 
 function SelectBiome() {
   const [biome, setBiome] = useAtom(currentBiome);
@@ -173,7 +174,20 @@ function Resouces() {
 
 function Graph() {
   const graph = useAtomValue(currentGraph);
-  return <pre>{graph}</pre>;
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!ref.current) return;
+    mermaid.render("graph", graph, ref.current).then(({ svg }) => {
+      if (!ref.current) return;
+      ref.current.innerHTML = svg;
+    });
+  }, [graph]);
+  return (
+    <>
+      <pre>{graph}</pre>
+      <div ref={ref} />
+    </>
+  );
 }
 
 function App() {
