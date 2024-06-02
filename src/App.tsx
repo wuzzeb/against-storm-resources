@@ -1,4 +1,4 @@
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Select from "react-select";
 import mermaid from "mermaid";
 
@@ -12,6 +12,8 @@ import {
   currentCrops,
   currentBuildings,
   currentRecipes,
+  selectedLinks,
+  Link,
 } from "./graph.ts";
 import { buildings, recipeByBuilding, startingBuildings } from "./recpie.ts";
 import { LazySeq } from "@seedtactics/immutable-collections";
@@ -175,16 +177,32 @@ function Resouces() {
 function Graph() {
   const graph = useAtomValue(currentGraph);
   const ref = useRef<HTMLDivElement>(null);
+  const setLinks = useSetAtom(selectedLinks);
+
   useEffect(() => {
     if (!ref.current) return;
     mermaid.render("graph", graph, ref.current).then(({ svg }) => {
       if (!ref.current) return;
       ref.current.innerHTML = svg;
+      ref.current.querySelectorAll("path.flowchart-link").forEach((path) => {
+        const start = LazySeq.of(path.classList)
+          .find((c) => c.startsWith("LS-"))
+          ?.substring(3)
+          .replaceAll("_", " ") as G | undefined;
+        const end = LazySeq.of(path.classList)
+          .find((c) => c.startsWith("LE-"))
+          ?.substring(3)
+          .replaceAll("_", " ") as G | undefined;
+        if (!start || !end) return;
+        path.addEventListener("click", () => {
+          const l = new Link(start, end);
+          setLinks((s) => (s.has(l) ? s.delete(l) : s.add(l)));
+        });
+      });
     });
-  }, [graph]);
+  }, [graph, setLinks]);
   return (
     <>
-      <pre>{graph}</pre>
       <div ref={ref} />
     </>
   );

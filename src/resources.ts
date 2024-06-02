@@ -59,7 +59,7 @@ export enum G {
   Wood = "Wood",
 }
 
-export type Good = { readonly value: string; readonly label: string };
+export type Good = { readonly value: G; readonly label: G };
 export const goods: ReadonlyArray<Good> = Object.values(G).map((value) => ({ value, label: value }));
 
 export type Deposit = {
