@@ -53,12 +53,14 @@ export type Building = {
   readonly label: B;
 };
 
-export const buildings: ReadonlyArray<Building> = Object.values(B).map((value) => ({ value, label: value }));
 export const startingBuildings: ReadonlyArray<Building> = [
   B.Makeshift_Post,
   B.Crude_Workstation,
   B.Field_Kitchen,
 ].map((value) => ({ value, label: value }));
+export const nonstartingBuildings: ReadonlyArray<Building> = Object.values(B)
+  .filter((b) => !startingBuildings.some((sb) => sb.value === b))
+  .map((value) => ({ value, label: value }));
 
 export type Recipe = {
   readonly good: G;

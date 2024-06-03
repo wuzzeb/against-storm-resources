@@ -205,7 +205,6 @@ export type Biome = {
   readonly value: string;
   readonly label: string;
   readonly trees: ReadonlyArray<G>;
-  readonly wiki: string;
 };
 
 export const biomes: ReadonlyArray<Biome> = [
@@ -213,24 +212,20 @@ export const biomes: ReadonlyArray<Biome> = [
     value: "Royal_Woodlands",
     label: "Royal Woodlands",
     trees: [G.Resin, G.Plant_Fiber, G.Eggs, G.Wood],
-    wiki: "https://hoodedhorse.com/wiki/Against_the_Storm/Royal_Woodlands",
   },
   {
     value: "Coral_Forest",
     label: "Coral Forest",
     trees: [G.Stone, G.Incense, G.Meat, G.Crystalized_Dew, G.Plant_Fiber, G.Wood],
-    wiki: "https://hoodedhorse.com/wiki/Against_the_Storm/Coral_Forest",
   },
   {
     value: "Marshlands",
     label: "Marshlands",
     trees: [G.Mushrooms, G.Leather, G.Wood],
-    wiki: "https://hoodedhorse.com/wiki/Against_the_Storm/Marshlands",
   },
   {
     value: "Scarlet_Orchard",
     label: "Scarlet Orchard",
     trees: [G.Copper_Ore, G.Pigment, G.Plant_Fiber, G.Wood],
-    wiki: "https://hoodedhorse.com/wiki/Against_the_Storm/Scarlet_Orchard",
   },
 ];

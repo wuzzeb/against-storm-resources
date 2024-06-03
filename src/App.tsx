@@ -6,7 +6,6 @@ import { G, biomes, crops, deposits, goods } from "./resources.ts";
 import {
   currentBiome,
   currentRaw,
-  currentGraph,
   currentTrade,
   currentDeposits,
   currentCrops,
@@ -14,10 +13,12 @@ import {
   currentRecipes,
   selectedLinks,
   Link,
-} from "./graph.ts";
-import { buildings, recipeByBuilding, startingBuildings } from "./recpie.ts";
+  resetAllResources,
+} from "./storage.ts";
+import { nonstartingBuildings, recipeByBuilding, startingBuildings } from "./recpie.ts";
 import { LazySeq } from "@seedtactics/immutable-collections";
 import { useEffect, useId, useRef } from "react";
+import { currentGraph } from "./graph.ts";
 
 function SelectBiome() {
   const [biome, setBiome] = useAtom(currentBiome);
@@ -28,7 +29,7 @@ function SelectBiome() {
         className="ats-react-select-container ml-2"
         classNamePrefix="ats-react-select"
         options={biomes}
-        defaultValue={biome}
+        value={biome}
         onChange={setBiome}
       />
     </div>
@@ -44,7 +45,7 @@ function SelectDeposits() {
         className="ats-react-select-container ml-2"
         classNamePrefix="ats-react-select"
         options={deposits}
-        defaultValue={cur}
+        value={cur}
         onChange={setDeposits}
         isMulti
       />
@@ -61,7 +62,7 @@ function SelectCrops() {
         className="ats-react-select-container ml-2"
         classNamePrefix="ats-react-select"
         options={crops}
-        defaultValue={cur}
+        value={cur}
         onChange={setCrops}
         isMulti
       />
@@ -78,7 +79,7 @@ function SelectTrade() {
         className="ats-react-select-container ml-2"
         classNamePrefix="ats-react-select"
         options={goods}
-        defaultValue={cur}
+        value={cur}
         onChange={setGoods}
         isMulti
       />
@@ -95,7 +96,7 @@ function SelectRaw() {
         className="ats-react-select-container ml-2"
         classNamePrefix="ats-react-select"
         options={goods}
-        defaultValue={cur}
+        value={cur}
         onChange={setGoods}
         isMulti
       />
@@ -111,8 +112,8 @@ function SelectBuildings() {
       <Select
         className="ats-react-select-container ml-2"
         classNamePrefix="ats-react-select"
-        options={buildings}
-        defaultValue={cur}
+        options={nonstartingBuildings}
+        value={cur}
         onChange={setBuildings}
         isMulti
       />
@@ -160,6 +161,20 @@ function SelectRecipes() {
   );
 }
 
+function ResetAll() {
+  const reset = useSetAtom(resetAllResources);
+  return (
+    <button
+      className="max-w-48 rounded bg-red-900 px-3 py-1 text-white"
+      onClick={() => {
+        reset();
+      }}
+    >
+      Reset All
+    </button>
+  );
+}
+
 function Resouces() {
   return (
     <div className="flex flex-col space-y-3">
@@ -170,6 +185,7 @@ function Resouces() {
       <SelectRaw />
       <SelectBuildings />
       <SelectRecipes />
+      <ResetAll />
     </div>
   );
 }
@@ -181,6 +197,7 @@ function Graph() {
 
   useEffect(() => {
     if (!ref.current) return;
+    if (graph === "") return;
     mermaid.render("graph", graph, ref.current).then(({ svg }) => {
       if (!ref.current) return;
       ref.current.innerHTML = svg;

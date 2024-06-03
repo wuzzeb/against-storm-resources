@@ -1,26 +1,17 @@
 import { atom } from "jotai";
-import { G, Biome, Crop, Deposit, Good } from "./resources.ts";
-import { LazySeq, OrderedSet, ComparableObj } from "@seedtactics/immutable-collections";
-import { Building, recipes } from "./recpie.ts";
-
-export const currentRaw = atom<ReadonlyArray<Good>>([]);
-export const currentTrade = atom<ReadonlyArray<Good>>([]);
-export const currentCrops = atom<ReadonlyArray<Crop>>([]);
-export const currentBiome = atom<Biome | null>(null);
-export const currentDeposits = atom<ReadonlyArray<Deposit>>([]);
-export const currentBuildings = atom<ReadonlyArray<Building>>([]);
-export const currentRecipes = atom<OrderedSet<G>>(OrderedSet.empty<G>());
-
-export class Link implements ComparableObj {
-  public constructor(
-    public readonly from: G,
-    public readonly to: G,
-  ) {}
-  public compare(other: Link): number {
-    return this.from.localeCompare(other.from) || this.to.localeCompare(other.to);
-  }
-}
-export const selectedLinks = atom<OrderedSet<Link>>(OrderedSet.empty<Link>());
+import { G } from "./resources.ts";
+import { LazySeq } from "@seedtactics/immutable-collections";
+import { recipes } from "./recpie.ts";
+import {
+  Link,
+  currentBiome,
+  currentCrops,
+  currentDeposits,
+  currentRaw,
+  currentRecipes,
+  currentTrade,
+  selectedLinks,
+} from "./storage.ts";
 
 export const currentGraph = atom<string>((get) => {
   const goods = LazySeq.of(get(currentRaw))
@@ -83,5 +74,9 @@ export const currentGraph = atom<string>((get) => {
     }
   }
 
-  return "flowchart LR\n" + lines.map((line) => "  " + line).join("\n");
+  if (lines.length === 0) {
+    return "";
+  } else {
+    return "flowchart LR\n" + lines.map((line) => "  " + line).join("\n");
+  }
 });
