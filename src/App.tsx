@@ -197,7 +197,10 @@ function Graph() {
 
   useEffect(() => {
     if (!ref.current) return;
-    if (graph === "") return;
+    if (graph === "") {
+      ref.current.innerHTML = "";
+      return;
+    }
     mermaid.render("graph", graph, ref.current).then(({ svg }) => {
       if (!ref.current) return;
       ref.current.innerHTML = svg;
