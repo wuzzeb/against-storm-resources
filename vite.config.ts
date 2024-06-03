@@ -5,6 +5,7 @@ import jotaiReactRefresh from "jotai/babel/plugin-react-refresh";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "/against-storm-resources/",
   plugins: [
     react({
       babel: { plugins: [jotaiDebugLabel, jotaiReactRefresh] },
